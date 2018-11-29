@@ -1,0 +1,40 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: user-sim
+  name: user-sim
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: user-sim
+    spec:
+      schedulerName: scheduler
+      containers:
+      - args:
+        - -d
+        - "60"
+        - -r
+        - "200"
+        - -c
+        - "2"
+        - -h
+        - edge-router
+        image: weaveworksdemos/load-test:0.1.1
+        name: user-sim
+        resources: {}
+        securityContext:
+          capabilities:
+            drop:
+            - all
+      hostname: user-simulator
+      restartPolicy: Always
+status: {}

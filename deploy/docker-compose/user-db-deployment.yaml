@@ -1,0 +1,42 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: user-db
+  name: user-db
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: user-db
+    spec:
+      schedulerName: scheduler
+      containers:
+      - image: weaveworksdemos/user-db:0.4.0
+        name: user-db
+        resources: {}
+        securityContext:
+          capabilities:
+            add:
+            - CHOWN
+            - SETGID
+            - SETUID
+            drop:
+            - all
+        volumeMounts:
+        - mountPath: /tmp
+          name: user-db-tmpfs0
+      hostname: user-db
+      restartPolicy: Always
+      volumes:
+      - emptyDir:
+          medium: Memory
+        name: user-db-tmpfs0
+status: {}

@@ -1,0 +1,31 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  annotations:
+    kompose.cmd: kompose convert -f docker-compose.yml
+    kompose.version: 1.17.0 (a74acad)
+  creationTimestamp: null
+  labels:
+    io.kompose.service: front-end
+  name: front-end
+spec:
+  replicas: 1
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        io.kompose.service: front-end
+    spec:
+      schedulerName: scheduler
+      containers:
+      - image: weaveworksdemos/front-end:0.3.12
+        name: front-end
+        resources: {}
+        securityContext:
+          capabilities:
+            drop:
+            - all
+      hostname: front-end
+      restartPolicy: Always
+status: {}
